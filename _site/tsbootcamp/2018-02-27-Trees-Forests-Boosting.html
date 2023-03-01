@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>quarto-test-website - Machine Learning and Econometrics: Trees, Random Forests, and Boosting</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">quarto-test-website</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../tsbootcamp.html">
+ <span class="menu-text">Time Series Bootcamp</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#regression-trees" id="toc-regression-trees" class="nav-link active" data-scroll-target="#regression-trees">Regression Trees</a></li>
+  <li><a href="#bagging" id="toc-bagging" class="nav-link" data-scroll-target="#bagging">Bagging</a></li>
+  <li><a href="#random-forests" id="toc-random-forests" class="nav-link" data-scroll-target="#random-forests">Random Forests</a></li>
+  <li><a href="#boosting" id="toc-boosting" class="nav-link" data-scroll-target="#boosting">Boosting</a></li>
+  <li><a href="#a-forecasting-example" id="toc-a-forecasting-example" class="nav-link" data-scroll-target="#a-forecasting-example">A Forecasting Example</a>
+  <ul class="collapse">
+  <li><a href="#a-few-caveats-up-front" id="toc-a-few-caveats-up-front" class="nav-link" data-scroll-target="#a-few-caveats-up-front">A Few Caveats Up-Front</a></li>
+  <li><a href="#the-details" id="toc-the-details" class="nav-link" data-scroll-target="#the-details">The Details</a></li>
+  </ul></li>
+  <li><a href="#thats-it" id="toc-thats-it" class="nav-link" data-scroll-target="#thats-it">That’s It!</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Machine Learning and Econometrics: Trees, Random Forests, and Boosting</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<p><em>This is the third in a series of <a href="http://blog.mindymallory.com/2018/02/how-does-machine-learning-fit-into-agricultural-economics/">posts</a> where I document my own process in figuring out how machine learning relates to the classic econometrics one learns in a graduate program in economics. Note that I am a humble practitioner of applied econometrics, so the ideas I am working through are not new, and my first take on them might not even be fully correct. But, I think many of us applied economists are starting to learn and dabble in this area and I thought it might be fruitful to community if I learn publicly in these blog posts. These posts are certainly going to solidify my own understanding and serve as helpful notes for my own purposes.</em></p>
+<p>In this post I summarize what I learned from Chapter 8 of <a href="http://www-bcf.usc.edu/~gareth/ISL/data.html">Introduction to Statistical Learning</a> (ISL). In my <a href="http://blog.mindymallory.com/2018/02/machine-learning-and-econometrics-model-selection-and-assessment-statistical-learning-style/">last post</a> I covered cross validation from chapter 5. I am skipping chapters 6 (Linear Model Selection and Regularization) and 7 (Moving Beyond Linearity) partly because I have kind of seen some of that stuff before and partly because I need to move my learning along in order to get something prepared for the <a href="https://www.agriskgroup.org/">SCC-76</a> meeting April 5-7th (Todd and Todd, I hope you aren’t getting nervous yet!).</p>
+<p>I’m really excited to write up this post because it covers something that I truly know zero about, and feels like ‘real’ machine learning. Tree-Based Methods! I’ll briefly describe regression trees, bagging, random forests, and boosting.</p>
+<section id="regression-trees" class="level1">
+<h1>Regression Trees</h1>
+<p>Regression trees take a fundamentally different approach to prediction than pretty much any kind of regression you will find in an econometrics class. In an econometrics class, you try to find the best function (often linear) that will predict the data. Specifically, you find <span class="math inline">\(\hat{f}(x)\)</span> to predict values of <span class="math inline">\(y\)</span> often by minimizing a quadratic loss function that looks something like the following:</p>
+<p><span class="math display">\[\sum_{i=1}^n (y_i - \hat{f}(x))^2\]</span></p>
+<p>So finding a functional form that minimizes the quantity above, usually referred to as the residual sum of squares (RSS), is the name of the game. If you further assume that the functional form is linear, then you just need to find the coefficients (<span class="math inline">\(\beta\)</span>’s in most notation) and you end up with ordinary least squares estimates.</p>
+<p>In a regression tree, you literally just find the cut-points in the prediction variables that split your sample in a way that gives the best possible prediction. This is really illustrated best with an example. I’ll piggyback on the example given in ISL. They use a database of professional baseball players’ salary. The database includes variables for years in the league and number of hits. The figure below is from ISL and it displays the result of fitting a regression tree to this data to predict the log of players’ salary. The first step is to determine which predictor has the best predictive power. Since we see years in the first split of the tree, it must be that splitting years at 4.5 years resulted in the best prediction compared to any other split in the years variable, and compared to splitting with hits first instead.</p>
+<p>In the second step, there are two leaves that may be split further, or the tree may stop splitting if there are less than a threshold number of observations in that bin. So for observations with years less than 4.5 years, you get your salary prediction by averaging the salary of all players who have been in the league less than 4.5 years. This average is 5.11 (logged salary…).</p>
+<p>On the other branch, for observations where year is greater than 4.5 years, there are more observations and we can split the sample based on the next best predicting variable. In this case, it is hits. So the algorithm searching for a split in the hits variable for observations that have years greater than 4.5 and it finds the best predicted salary comes from splitting hits at 117.5.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images\8.1-ISLR.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure 8.1 from ISL</figcaption><p></p>
+</figure>
+</div>
+<p><em>This figure is taken from “An Introduction to Statistical Learning, with applications in R” (Springer, 2013) with permission from the authors: G. James, D. Witten, T. Hastie and R. Tibshirani</em></p>
+<p>That is it. It is pretty simple conceptually. The book discusses techniques to prevent over-fitting, specifically ‘pruning’ the tree. But I’ll leave that for interested readers to explore themselves. However, a simple regression tree as I described above can be influenced highly be slight changes or additions to the data-set, making the predictions not very robust.</p>
+<p>The methods of bagging and random forests attempt to stabilize the results. I find the approach to be pretty intuitive.</p>
+</section>
+<section id="bagging" class="level1">
+<h1>Bagging</h1>
+<p>It turns out, bagging stands for ‘bootstrapped aggregation’. Once you know that, and if you have ever used a bootstrap, you might be able to guess what bagging is. The idea is that you can create more robust predictions by bootstrapping a bunch of sub-samples, fitting a regression tree to each sub-sample, and then averaging the predictions across the bootstrapped sample. By bootstrapping and then aggregating, you will greatly reduce the variance in your predictions as you update your sample to include new data. Then you would test your predictions on a hold out sample that was never drawn from for any of the bootstrap samples. This is called ‘out of bag’ prediction. There must be a funny dad joke in there. That is left as an exercise to the reader (that part is a professor joke).</p>
+<p>Cool. Very simple idea.</p>
+</section>
+<section id="random-forests" class="level1">
+<h1>Random Forests</h1>
+<p>Bagging will improve accuracy and robustness of predictions, however random forests and improve further. Bagging can be improved upon because if one of your variables is a pretty good predictor, than it will probably be a pretty good predictor in most of your bootstrap samples. That will lead it to appear higher in the regression tree, and the split will probably be pretty similar across bootstrapped samples too. That means the predictions across bootstrapped samples within the bag will be pretty correlated and you are not getting as much bang for your buck from the bootstrapped samples as you would hope.</p>
+<p>A random forest solves this problem by randomly choosing a subset of the predictors as candidates for the split. At each split and new subset of potential predictors is chosen. This restriction de-correlates the trees in the bagging process. The intuition is easiest to follow if you think about the best predictor. The best predictor will end up being the predictor that is split first in most of the bagged regression trees. However, in a random forest, some of those trees do not allow the best predictor to be used in the first split. Hence, the tree will be different then the highly correlated trees from the bagged sample. Counter-intuitively, by handicapping the bootstrapped trees this way you usually reduce the mean square error of the predictions.</p>
+</section>
+<section id="boosting" class="level1">
+<h1>Boosting</h1>
+<p>So, as we learned, random forests are a natural extension of bagging, and both are built on taking bootstrapped samples and applying a regression tree to each sample. Boosting is different, in that a boosted regression tree is built off of one test sample, and the trees are built sequentially. It took me a bit more to understand the basic idea of boosting. But what happens is this:</p>
+<ol type="1">
+<li>Define the test sample</li>
+<li>Fit a regression tree with depth d = the number of splits, and shrinkage parameter chosen (see <a href="http://www-bcf.usc.edu/~gareth/ISL/ISLR%20Seventh%20Printing.pdf">chapter 6</a>. shrinkage parameter as in a ridge or lasso regression)</li>
+<li>Calculate residuals from the actual and predicted values</li>
+<li>Fit a regression tree to the residuals obtained in step 3</li>
+<li>Repeat 3 and 4 until the desired number of trees has been fitted</li>
+</ol>
+<p>Since the sequential trees improve on the residuals of the previous steps, the model is said to ‘learn slowly’, which generally achieves a better fit.</p>
+</section>
+<section id="a-forecasting-example" class="level1">
+<h1>A Forecasting Example</h1>
+<p>Since bagging, random forests, and boosting are completely new techniques to me, I wanted to apply them in an area that is familiar to me, and also the the very hardest environment to forecast in… the stock market. For this example I will focus on boosting, because I did some small forecasting test runs in stocks, and indeed, the basic boosting algorithm used in ISL had a lower mean square error than bagging, random forests, or a linear model.</p>
+<p>Here’s the forecasting set up.</p>
+<p>I will consider the top 10 S&amp;P 500 companies by market cap, and try to forecast the stock with the largest absolute value of return and buy it if the largest forecasted return is positive or sell it if the largest forecasted return is negative. Also, I will throw in four of the biggest Spyder sector exchange traded funds and predictors just for fun.</p>
+<p>Facebook and Berkshire Hathaway are excluded and replaced with the #11 and #12 companies - Bank of America and Wells Fargo. I wanted to use a long series and FB has only been public since 2012, and I had trouble downloading the Berkshire Hathaway data.</p>
+<p>I will use a boosting model to forecast the daily return of each stock. Then I will pick which one to buy or sell based on which stock had the largest forecasted return in absolute value. I like this method of evaluating forecast performance because it is hard to tell from a mean squared error-type estimate if you have a forecast that is good enough to make money. So turning the forecast into a trading strategy and then back-testing it’s performance gives you a sense of the quality of your forecasts.</p>
+<section id="a-few-caveats-up-front" class="level2">
+<h2 class="anchored" data-anchor-id="a-few-caveats-up-front">A Few Caveats Up-Front</h2>
+<p>I am going to use data going back to 2007, but I am restricting my choices to the current top 10 market cap companies. Companies like Google and Amazon were not in the top 10 by market cap in 2007, so the fact that they ascended to the top 10 by today builds in a lot of look-back bias. If you know a company go from not being in the top 10, to being in the top 10 you don’t need a fancy forecasting model to make money. Just buy it.</p>
+<p>I could do this better if I restricted my decision set to who was in the top 10 at the time of the forecast. I could also do better if I set up my forecast to use a rolling window of, say, 50 or 100 observations and then re-estimate the boosted model each day. Both of those things would reduce the look back bias, but the purpose of this post is more for me to get a feel for the boosting algorithm than it is to find the best realistic forecasting model.</p>
+<p>And like I always tell my students, if I ever find a forecasting model that actually works well enough to make money, I’ll never tell you about it!</p>
+</section>
+<section id="the-details" class="level2">
+<h2 class="anchored" data-anchor-id="the-details">The Details</h2>
+<p>The code below loads the required R packages and downloads the stocks that I want.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you haven't installed any of the packages listed below, do so with the "install.packages('tibble')" command. </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quantmod)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForest)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(PerformanceAnalytics)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gbm)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#SPY and Top 10 S&amp;P 500 Companies by Market Cap (BRK.B replaced by #11 BAC, bc Berkshire wouldn't download. FB replaced by #12 WFC bc I want long sample and FB has only been trading since '12. Plus 4 of the biggest Spyder sector etfs.) XLF - Financials, XLK - Tech, XLE - Energy, XLY - Consumer Discretionary</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>SP  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">getSymbols</span>(SP)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "SPY"  "AAPL" "MSFT" "AMZN" "WFC"  "JPM"  "BAC"  "JNJ"  "GOOG" "XOM" 
+[11] "XLF"  "XLK"  "XLE"  "XLY" </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>SP <span class="ot">&lt;-</span> <span class="fu">cbind</span>(SPY<span class="sc">$</span>SPY.Adjusted, AAPL<span class="sc">$</span>AAPL.Adjusted, MSFT<span class="sc">$</span>MSFT.Adjusted, AMZN<span class="sc">$</span>AMZN.Adjusted, WFC<span class="sc">$</span>WFC.Adjusted, JPM<span class="sc">$</span>JPM.Adjusted, BAC<span class="sc">$</span>BAC.Adjusted, JNJ<span class="sc">$</span>JNJ.Adjusted, GOOG<span class="sc">$</span>GOOG.Adjusted, XOM<span class="sc">$</span>XOM.Adjusted, XLF<span class="sc">$</span>XLF.Adjusted, XLK<span class="sc">$</span>XLK.Adjusted, XLE<span class="sc">$</span>XLE.Adjusted, XLY<span class="sc">$</span>XLY.Adjusted)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(SP) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The next chunk of code calculates percentage returns, create lags, and combine into one object, <code>SPRet</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>SPRet <span class="ot">&lt;-</span> <span class="fu">Return.calculate</span>(SP, <span class="at">method =</span> <span class="st">'log'</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>laggs<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">apply</span>(SPRet, <span class="dv">2</span>, Lag, <span class="dv">1</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>laggs<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">apply</span>(SPRet, <span class="dv">2</span>, Lag, <span class="dv">2</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>laggs<span class="fl">.3</span> <span class="ot">&lt;-</span> <span class="fu">apply</span>(SPRet, <span class="dv">2</span>, Lag, <span class="dv">3</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>laggs<span class="fl">.4</span> <span class="ot">&lt;-</span> <span class="fu">apply</span>(SPRet, <span class="dv">2</span>, Lag, <span class="dv">4</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>laggs<span class="fl">.5</span> <span class="ot">&lt;-</span> <span class="fu">apply</span>(SPRet, <span class="dv">2</span>, Lag, <span class="dv">5</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>laggs<span class="fl">.6</span> <span class="ot">&lt;-</span> <span class="fu">apply</span>(SPRet, <span class="dv">2</span>, Lag, <span class="dv">6</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>laggs<span class="fl">.7</span> <span class="ot">&lt;-</span> <span class="fu">apply</span>(SPRet, <span class="dv">2</span>, Lag, <span class="dv">7</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>laggs<span class="fl">.8</span> <span class="ot">&lt;-</span> <span class="fu">apply</span>(SPRet, <span class="dv">2</span>, Lag, <span class="dv">8</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>laggs<span class="fl">.9</span> <span class="ot">&lt;-</span> <span class="fu">apply</span>(SPRet, <span class="dv">2</span>, Lag, <span class="dv">9</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>laggs<span class="fl">.10</span> <span class="ot">&lt;-</span> <span class="fu">apply</span>(SPRet, <span class="dv">2</span>, Lag, <span class="dv">10</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>laggs   <span class="ot">&lt;-</span> <span class="fu">cbind</span>(laggs<span class="fl">.1</span>, laggs<span class="fl">.2</span>, laggs<span class="fl">.3</span>, laggs<span class="fl">.4</span>, laggs<span class="fl">.5</span>, laggs<span class="fl">.6</span>, laggs<span class="fl">.7</span>, laggs<span class="fl">.8</span>, laggs<span class="fl">.9</span>, laggs<span class="fl">.10</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>SPRet   <span class="ot">&lt;-</span> <span class="fu">cbind</span>(SPRet, laggs)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>NAMES   <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In the next code chunk we split the data into training and testing sub-samples. Then it uses the <code>gbm()</code> function from the <code>gbm</code> package to use a gradient boosting machine to implement the boosted regression trees. For a more technical description of the gbm, see <a href="https://towardsdatascience.com/boosting-algorithm-gbm-97737c63daa3">here</a>. We we get boosted predictions for each of the stocks we are considering.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set.seed(15) #GOOD</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#set.seed(12) #also good </span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#train         &lt;- sample(12:nrow(SPRet[12:dim(SPRet)[1]]), nrow(SPRet[12:dim(SPRet)[1]])/1.5)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#temp          &lt;- SPRet[train]</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>temp          <span class="ot">&lt;-</span> SPRet[<span class="dv">12</span><span class="sc">:</span><span class="dv">2110</span>,]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>testing       <span class="ot">&lt;-</span> SPRet[<span class="dv">2110</span><span class="sc">:</span>(<span class="fu">dim</span>(SPRet)[<span class="dv">1</span>]),]</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>ntrees        <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>depth         <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># SPY</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>SPRtemp       <span class="ot">&lt;-</span> temp[, <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>boost.SPY     <span class="ot">&lt;-</span> <span class="fu">gbm</span>(SPY<span class="sc">~</span>., <span class="at">data=</span> SPRtemp, <span class="at">distribution =</span> <span class="st">"gaussian"</span>, <span class="at">n.trees =</span> ntrees, <span class="at">interaction.depth =</span> <span class="dv">4</span>, <span class="at">shrinkage =</span> .<span class="dv">001</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>yhat.SPY      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.SPY, <span class="at">newdata =</span> testing, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>SPRtempFull   <span class="ot">&lt;-</span> SPRet[<span class="dv">2110</span><span class="sc">:</span>(<span class="fu">dim</span>(SPRet)[<span class="dv">1</span>]), <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>yhat.SPY      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.SPY, <span class="at">newdata =</span> SPRtempFull, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>indicator.SPY <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">as.matrix</span>(<span class="fu">Lag</span>(yhat.SPY)[<span class="dv">2</span><span class="sc">:</span><span class="fu">dim</span>(<span class="fu">Lag</span>(yhat.SPY))]), <span class="dv">1</span>, <span class="cf">function</span>(x) <span class="cf">if</span>(x<span class="sc">&lt;</span><span class="dv">0</span>) (<span class="sc">-</span><span class="dv">1</span>) <span class="cf">else</span> <span class="dv">1</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># AAPL</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>SPRtemp       <span class="ot">&lt;-</span> temp[, <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>boost.AAPL     <span class="ot">&lt;-</span> <span class="fu">gbm</span>(AAPL<span class="sc">~</span>., <span class="at">data=</span> SPRtemp, <span class="at">distribution =</span> <span class="st">"gaussian"</span>, <span class="at">n.trees =</span> ntrees, <span class="at">interaction.depth =</span> depth, <span class="at">shrinkage =</span> .<span class="dv">001</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>yhat.AAPL      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.AAPL, <span class="at">newdata =</span> testing, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>SPRtempFull    <span class="ot">&lt;-</span> SPRet[<span class="dv">2110</span><span class="sc">:</span>(<span class="fu">dim</span>(SPRet)[<span class="dv">1</span>]), <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>yhat.AAPL      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.AAPL, <span class="at">newdata =</span> SPRtempFull, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>indicator.AAPL <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">as.matrix</span>(<span class="fu">Lag</span>(yhat.AAPL)[<span class="dv">2</span><span class="sc">:</span><span class="fu">dim</span>(<span class="fu">Lag</span>(yhat.SPY))]), <span class="dv">1</span>, <span class="cf">function</span>(x) <span class="cf">if</span>(x<span class="sc">&lt;</span><span class="dv">0</span>) (<span class="sc">-</span><span class="dv">1</span>) <span class="cf">else</span> <span class="dv">1</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co"># MSFT</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>SPRtemp        <span class="ot">&lt;-</span> temp[, <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>boost.MSFT     <span class="ot">&lt;-</span> <span class="fu">gbm</span>(MSFT<span class="sc">~</span>., <span class="at">data=</span> SPRtemp, <span class="at">distribution =</span> <span class="st">"gaussian"</span>, <span class="at">n.trees =</span> ntrees, <span class="at">interaction.depth =</span> depth, <span class="at">shrinkage =</span> .<span class="dv">001</span>)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>yhat.MSFT      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.MSFT, <span class="at">newdata =</span> testing, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>SPRtempFull    <span class="ot">&lt;-</span> SPRet[<span class="dv">2110</span><span class="sc">:</span>(<span class="fu">dim</span>(SPRet)[<span class="dv">1</span>]), <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>yhat.MSFT      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.MSFT, <span class="at">newdata =</span> SPRtempFull, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>indicator.MSFT <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">as.matrix</span>(<span class="fu">Lag</span>(yhat.MSFT)[<span class="dv">2</span><span class="sc">:</span><span class="fu">dim</span>(<span class="fu">Lag</span>(yhat.SPY))]), <span class="dv">1</span>, <span class="cf">function</span>(x) <span class="cf">if</span>(x<span class="sc">&lt;</span><span class="dv">0</span>) (<span class="sc">-</span><span class="dv">1</span>) <span class="cf">else</span> <span class="dv">1</span>)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="co"># AMZN</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>SPRtemp        <span class="ot">&lt;-</span> temp[, <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>boost.AMZN     <span class="ot">&lt;-</span> <span class="fu">gbm</span>(AMZN<span class="sc">~</span>., <span class="at">data=</span> SPRtemp, <span class="at">distribution =</span> <span class="st">"gaussian"</span>, <span class="at">n.trees =</span> ntrees, <span class="at">interaction.depth =</span> depth, <span class="at">shrinkage =</span> .<span class="dv">001</span>)</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>yhat.AMZN      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.AMZN, <span class="at">newdata =</span> testing, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>SPRtempFull    <span class="ot">&lt;-</span> SPRet[<span class="dv">2110</span><span class="sc">:</span>(<span class="fu">dim</span>(SPRet)[<span class="dv">1</span>]), <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>yhat.AMZN      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.AMZN, <span class="at">newdata =</span> SPRtempFull, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>indicator.AMZN <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">as.matrix</span>(<span class="fu">Lag</span>(yhat.AMZN)[<span class="dv">2</span><span class="sc">:</span><span class="fu">dim</span>(<span class="fu">Lag</span>(yhat.SPY))]), <span class="dv">1</span>, <span class="cf">function</span>(x) <span class="cf">if</span>(x<span class="sc">&lt;</span><span class="dv">0</span>) (<span class="sc">-</span><span class="dv">1</span>) <span class="cf">else</span> <span class="dv">1</span>)</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a><span class="co"># WFC</span></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>SPRtemp        <span class="ot">&lt;-</span> temp[, <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>boost.WFC     <span class="ot">&lt;-</span> <span class="fu">gbm</span>(WFC<span class="sc">~</span>., <span class="at">data=</span> SPRtemp, <span class="at">distribution =</span> <span class="st">"gaussian"</span>, <span class="at">n.trees =</span> ntrees, <span class="at">interaction.depth =</span> depth, <span class="at">shrinkage =</span> .<span class="dv">001</span>)</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>yhat.WFC      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.WFC, <span class="at">newdata =</span> testing, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>SPRtempFull    <span class="ot">&lt;-</span> SPRet[<span class="dv">2110</span><span class="sc">:</span>(<span class="fu">dim</span>(SPRet)[<span class="dv">1</span>]), <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>yhat.WFC      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.WFC, <span class="at">newdata =</span> SPRtempFull, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>indicator.WFC <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">as.matrix</span>(<span class="fu">Lag</span>(yhat.WFC)[<span class="dv">2</span><span class="sc">:</span><span class="fu">dim</span>(<span class="fu">Lag</span>(yhat.SPY))]), <span class="dv">1</span>, <span class="cf">function</span>(x) <span class="cf">if</span>(x<span class="sc">&lt;</span><span class="dv">0</span>) (<span class="sc">-</span><span class="dv">1</span>) <span class="cf">else</span> <span class="dv">1</span>)</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a><span class="co"># JPM</span></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>SPRtemp        <span class="ot">&lt;-</span> temp[, <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>boost.JPM     <span class="ot">&lt;-</span> <span class="fu">gbm</span>(JPM<span class="sc">~</span>., <span class="at">data=</span> SPRtemp, <span class="at">distribution =</span> <span class="st">"gaussian"</span>, <span class="at">n.trees =</span> ntrees, <span class="at">interaction.depth =</span> depth, <span class="at">shrinkage =</span> .<span class="dv">001</span>)</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>yhat.JPM      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.JPM, <span class="at">newdata =</span> testing, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>SPRtempFull    <span class="ot">&lt;-</span> SPRet[<span class="dv">2110</span><span class="sc">:</span>(<span class="fu">dim</span>(SPRet)[<span class="dv">1</span>]), <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>yhat.JPM      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.JPM, <span class="at">newdata =</span> SPRtempFull, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>indicator.JPM <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">as.matrix</span>(<span class="fu">Lag</span>(yhat.JPM)[<span class="dv">2</span><span class="sc">:</span><span class="fu">dim</span>(<span class="fu">Lag</span>(yhat.SPY))]), <span class="dv">1</span>, <span class="cf">function</span>(x) <span class="cf">if</span>(x<span class="sc">&lt;</span><span class="dv">0</span>) (<span class="sc">-</span><span class="dv">1</span>) <span class="cf">else</span> <span class="dv">1</span>)</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a><span class="co"># BAC</span></span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>SPRtemp        <span class="ot">&lt;-</span> temp[, <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>boost.BAC     <span class="ot">&lt;-</span> <span class="fu">gbm</span>(BAC<span class="sc">~</span>., <span class="at">data=</span> SPRtemp, <span class="at">distribution =</span> <span class="st">"gaussian"</span>, <span class="at">n.trees =</span> ntrees, <span class="at">interaction.depth =</span> depth, <span class="at">shrinkage =</span> .<span class="dv">001</span>)</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>yhat.BAC      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.BAC, <span class="at">newdata =</span> testing, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>SPRtempFull    <span class="ot">&lt;-</span> SPRet[<span class="dv">2110</span><span class="sc">:</span>(<span class="fu">dim</span>(SPRet)[<span class="dv">1</span>]), <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>yhat.BAC      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.BAC, <span class="at">newdata =</span> SPRtempFull, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>indicator.BAC <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">as.matrix</span>(<span class="fu">Lag</span>(yhat.BAC)[<span class="dv">2</span><span class="sc">:</span><span class="fu">dim</span>(<span class="fu">Lag</span>(yhat.SPY))]), <span class="dv">1</span>, <span class="cf">function</span>(x) <span class="cf">if</span>(x<span class="sc">&lt;</span><span class="dv">0</span>) (<span class="sc">-</span><span class="dv">1</span>) <span class="cf">else</span> <span class="dv">1</span>)</span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a><span class="co"># JNJ</span></span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>SPRtemp        <span class="ot">&lt;-</span> temp[, <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>boost.JNJ     <span class="ot">&lt;-</span> <span class="fu">gbm</span>(JNJ<span class="sc">~</span>., <span class="at">data=</span> SPRtemp, <span class="at">distribution =</span> <span class="st">"gaussian"</span>, <span class="at">n.trees =</span> ntrees, <span class="at">interaction.depth =</span> depth, <span class="at">shrinkage =</span> .<span class="dv">001</span>)</span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>yhat.JNJ      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.JNJ, <span class="at">newdata =</span> testing, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>SPRtempFull    <span class="ot">&lt;-</span> SPRet[<span class="dv">2110</span><span class="sc">:</span>(<span class="fu">dim</span>(SPRet)[<span class="dv">1</span>]), <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"GOOG"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>yhat.JNJ      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.JNJ, <span class="at">newdata =</span> SPRtempFull, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a>indicator.JNJ <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">as.matrix</span>(<span class="fu">Lag</span>(yhat.JNJ)[<span class="dv">2</span><span class="sc">:</span><span class="fu">dim</span>(<span class="fu">Lag</span>(yhat.SPY))]), <span class="dv">1</span>, <span class="cf">function</span>(x) <span class="cf">if</span>(x<span class="sc">&lt;</span><span class="dv">0</span>) (<span class="sc">-</span><span class="dv">1</span>) <span class="cf">else</span> <span class="dv">1</span>)</span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a><span class="co"># GOOG</span></span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>SPRtemp        <span class="ot">&lt;-</span> temp[, <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a>boost.GOOG     <span class="ot">&lt;-</span> <span class="fu">gbm</span>(GOOG<span class="sc">~</span>., <span class="at">data=</span> SPRtemp, <span class="at">distribution =</span> <span class="st">"gaussian"</span>, <span class="at">n.trees =</span> ntrees, <span class="at">interaction.depth =</span> depth, <span class="at">shrinkage =</span> .<span class="dv">001</span>)</span>
+<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a>yhat.GOOG      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.GOOG, <span class="at">newdata =</span> testing, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a>SPRtempFull    <span class="ot">&lt;-</span> SPRet[<span class="dv">2110</span><span class="sc">:</span>(<span class="fu">dim</span>(SPRet)[<span class="dv">1</span>]), <span class="fu">setdiff</span>(<span class="fu">colnames</span>(SPRet), <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"MSFT"</span>, <span class="st">"AMZN"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"XOM"</span>, <span class="st">"XLF"</span>, <span class="st">"XLK"</span>, <span class="st">"XLE"</span>, <span class="st">"XLY"</span>))]</span>
+<span id="cb5-90"><a href="#cb5-90" aria-hidden="true" tabindex="-1"></a>yhat.GOOG      <span class="ot">&lt;-</span> <span class="fu">predict</span>(boost.GOOG, <span class="at">newdata =</span> SPRtempFull, <span class="at">n.trees =</span> ntrees)</span>
+<span id="cb5-91"><a href="#cb5-91" aria-hidden="true" tabindex="-1"></a>indicator.GOOG <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">as.matrix</span>(<span class="fu">Lag</span>(yhat.GOOG)[<span class="dv">2</span><span class="sc">:</span><span class="fu">dim</span>(<span class="fu">Lag</span>(yhat.SPY))]), <span class="dv">1</span>, <span class="cf">function</span>(x) <span class="cf">if</span>(x<span class="sc">&lt;</span><span class="dv">0</span>) (<span class="sc">-</span><span class="dv">1</span>) <span class="cf">else</span> <span class="dv">1</span>)</span>
+<span id="cb5-92"><a href="#cb5-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-93"><a href="#cb5-93" aria-hidden="true" tabindex="-1"></a>SPRtempFull    <span class="ot">&lt;-</span> SPRet[<span class="dv">2110</span><span class="sc">:</span>(<span class="fu">dim</span>(SPRet)[<span class="dv">1</span>]),]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, the next chunk takes all the predictions, and each day records the stock that has the highest return in absolute value, and also records whether it was positive or negative so we know whether to buy or sell.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Picking Stock with highest absolute value of predicted return. </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>all            <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">cbind</span>(yhat.SPY, yhat.AAPL, yhat.AMZN, yhat.MSFT, yhat.WFC, yhat.JPM, yhat.BAC, yhat.JNJ, yhat.GOOG))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(all)  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"SPY"</span>, <span class="st">"AAPL"</span>, <span class="st">"AMZN"</span>, <span class="st">"MSFT"</span>, <span class="st">"WFC"</span>, <span class="st">"JPM"</span>, <span class="st">"BAC"</span>, <span class="st">"JNJ"</span>, <span class="st">"GOOG"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>Temp           <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">abs</span>(all), <span class="dv">1</span>, which.max)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>return.picker  <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(Temp)){</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>return.picker[i,<span class="dv">1</span>] <span class="ot">&lt;-</span> all[i, Temp[i]]</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Long or Short</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>indicator.picker <span class="ot">&lt;-</span> <span class="fu">apply</span>(return.picker, <span class="dv">1</span>, <span class="cf">function</span>(x) <span class="cf">if</span>(x<span class="sc">&lt;</span><span class="dv">0</span>) (<span class="sc">-</span><span class="dv">1</span>) <span class="cf">else</span> <span class="dv">1</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Actual Returns of Picked Stocks</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>return.Picker1  <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>return.Picker2  <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>return.Picker3  <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(Temp)){</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>return.Picker1[i, <span class="dv">1</span>] <span class="ot">&lt;-</span> SPRtempFull[i, Temp[i]]</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>return.Picker2[i, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="fu">colnames</span>(all)[Temp[i]]</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>return.Picker3[i, <span class="dv">1</span>] <span class="ot">&lt;-</span> indicator.picker[i]</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>return.Picker1    <span class="ot">&lt;-</span> <span class="fu">xts</span>(return.Picker1 , <span class="at">order.by =</span> <span class="fu">index</span>(SPRtempFull))</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>return.Picker2    <span class="ot">&lt;-</span> <span class="fu">xts</span>(return.Picker2 , <span class="at">order.by =</span> <span class="fu">index</span>(SPRtempFull))</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>return.Picker3    <span class="ot">&lt;-</span> <span class="fu">xts</span>(return.Picker3 , <span class="at">order.by =</span> <span class="fu">index</span>(SPRtempFull))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>OK, now the next chunk of code takes $10,000 and starts buying or selling every day in the test set, which is after about September 2014.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>invest         <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>DATA            <span class="ot">&lt;-</span> <span class="fu">cbind</span>(invest<span class="sc">*</span><span class="fu">cumprod</span>(<span class="dv">1</span><span class="sc">+</span>SPRtempFull<span class="sc">$</span>SPY), invest<span class="sc">*</span><span class="fu">cumprod</span>(<span class="dv">1</span><span class="sc">+</span>return.Picker1), invest<span class="sc">*</span><span class="fu">cumprod</span>(<span class="dv">1</span><span class="sc">+</span>SPRtempFull<span class="sc">$</span>AMZN), invest<span class="sc">*</span><span class="fu">cumprod</span>(<span class="dv">1</span><span class="sc">+</span>SPRtempFull<span class="sc">$</span>AAPL))</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(DATA)  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'SPY'</span>, <span class="st">"Picker"</span>, <span class="st">"AMZN"</span>, <span class="st">"AAPL"</span>) </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>DATA            <span class="ot">&lt;-</span> <span class="fu">tidy</span>(DATA)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>How did the boosting stock picker do? I plot the cumulative returns of just buying and holding the SPY, Apple, and Amazon. Our boosted stock picker returns are in blue.</p>
+<p>The boosting stock picker had us long Apple most of the time. Then in the test period, Amazon was the monster. But since we were not re-estimating the model, it never pivoted. I kind of expected it to recognize the large returns of Amazon and switch, even though it was using a dated model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(DATA, <span class="fu">aes</span>(<span class="at">x =</span> index, <span class="at">y =</span> value, <span class="at">color =</span> series)) <span class="sc">+</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Buy &amp; Hold SPY, AAPL, AMZN vs 'Boosting' Picker, $10K Invested"</span>, <span class="at">x =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2018-02-27-Trees-Forests-Boosting_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This chart is just a count of the number of days in each stock.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(return.Picker2, <span class="fu">aes</span>(<span class="at">x =</span> V1)) <span class="sc">+</span> <span class="fu">geom_bar</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2018-02-27-Trees-Forests-Boosting_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>And this chart is a count of the number of days we were long (1) versus short (-1).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(return.Picker3, <span class="fu">aes</span>(<span class="at">x =</span> V1)) <span class="sc">+</span> <span class="fu">geom_bar</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2018-02-27-Trees-Forests-Boosting_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The interesting thing is, that this method of stock picking with a boosting algorithm on lagged returns basically gives you the same result any trend following strategy would. And those are generally much simpler. The are along the lines of buy if the price is above the 50 day moving average, etc. I guess it does independently suggest that trend following is better than contrarian strategies which for example might sell if the price is above the 50 day moving average.</p>
+<p>I’m curious about what the result would be in commodities. Stocks generally trend up, unless we are in a major correction. Commodities do not have that same property.</p>
+<p>Perhaps another day…</p>
+</section>
+</section>
+<section id="thats-it" class="level1">
+<h1>That’s It!</h1>
+<p>That’s it for this time! I was a little surprised at how this method came out to be so similar to other trend following strategies. If I had suspected this from the beginning I would have set up a proper horse-race between the boosting stock picker and some other common trading strategies.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>quarto-test-website - Basic Time-Series Analysis: The VAR Model Explained?</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script src="../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">quarto-test-website</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../tsbootcamp.html">
+ <span class="menu-text">Time Series Bootcamp</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#vector-autoregression-model" id="toc-vector-autoregression-model" class="nav-link active" data-scroll-target="#vector-autoregression-model">Vector Autoregression Model</a>
+  <ul class="collapse">
+  <li><a href="#levels-or-returns" id="toc-levels-or-returns" class="nav-link" data-scroll-target="#levels-or-returns">Levels or Returns?</a></li>
+  <li><a href="#var2-on-spy-and-gs-returns" id="toc-var2-on-spy-and-gs-returns" class="nav-link" data-scroll-target="#var2-on-spy-and-gs-returns">VAR(2) on SPY and GS Returns</a></li>
+  <li><a href="#what-is-it-used-for" id="toc-what-is-it-used-for" class="nav-link" data-scroll-target="#what-is-it-used-for">What is it Used for?</a></li>
+  <li><a href="#granger-causality" id="toc-granger-causality" class="nav-link" data-scroll-target="#granger-causality">Granger Causality</a></li>
+  <li><a href="#tests-for-granger-causality" id="toc-tests-for-granger-causality" class="nav-link" data-scroll-target="#tests-for-granger-causality">Tests for Granger Causality</a></li>
+  <li><a href="#forecast-error-variance-decomposition" id="toc-forecast-error-variance-decomposition" class="nav-link" data-scroll-target="#forecast-error-variance-decomposition">Forecast Error Variance Decomposition</a></li>
+  <li><a href="#impulse-response-function" id="toc-impulse-response-function" class="nav-link" data-scroll-target="#impulse-response-function">Impulse Response Function</a></li>
+  </ul></li>
+  <li><a href="#thats-it" id="toc-thats-it" class="nav-link" data-scroll-target="#thats-it">That’s It!</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Basic Time-Series Analysis: The VAR Model Explained?</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<p><em>This post is the third in a series explaining <a href="http://blog.mindymallory.com/2018/01/basic-time-series-analysis-the-game/">Basic Time Series Analysis</a>. Click the link to check out the first post which focused on stationarity versus non-stationarity, and to find a list of other topics covered. As a reminder, this post is intended to be a very applied example of how use certain tests and models in a time-sereis analysis, either to get someone started learning about time-series techniques or to provide a big-picture perspective to someone taking a formal time-series class where the stats are coming fast and furious. As in the first post, the code producing these examples is provided for those who want to follow along in R. If you aren’t into R, just ignore the code blocks and the intuition will follow.</em></p>
+<p>In this post I explain how one goes about estimating the relationship among several variables over time. This approach has natural applications in agricultural economics and finance. In ag econ there are commodities whose prices are inherently related because of substitution or complementary effects in production and/or consumption (e.g., corn and soybeans), or because of production processes (e.g., soybeans, soybean oil, and soybean meal). In finance, security prices for companies in a similar sector might be related because of common economic conditions driving profitability (e.g., Bank of America and J.P. Morgan Chase).</p>
+<p>In time-series analysis, there are two basic models typically used to estimate and evaluate the relationships between multiple variables over time.</p>
+<ul>
+<li>Vector Auto-regression (VAR)</li>
+<li>Vector Error Correction (VECM)</li>
+</ul>
+<p>We will start with the Vector Auto-regression model, because it is the simpler one. The next post will cover VECM which estimates how a group of variables move together in equilibrium. Also for simplicity, we will continue as in the first post using SPY (the S&amp;P 500 exchange traded fund) and GS (Goldman Sachs) prices.</p>
+<div class="cell" data-hash="2018-01-24-Basic-Time-Series-Analysis-Does-Stuff-Move-Together_cache/html/unnamed-chunk-2_962fa657e2bcddcb00b00ac0392636bb">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If you are following along, uncomment the next lines and run once to install the required packages </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages('ggplot2')</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages('xts')</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages('quantmod')</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages('broom')</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages('tseries')</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("kableExtra")</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("knitr")</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("vars")</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quantmod)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">getSymbols</span>(<span class="fu">c</span>(<span class="st">'SPY'</span>, <span class="st">'GS'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "SPY" "GS" </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>SPYRet                <span class="ot">&lt;-</span> <span class="fu">log</span>(SPY<span class="sc">$</span>SPY.Adjusted) <span class="sc">-</span> <span class="fu">log</span>(<span class="fu">lag</span>(SPY<span class="sc">$</span>SPY.Adjusted))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>GSRet                 <span class="ot">&lt;-</span> <span class="fu">log</span>(GS<span class="sc">$</span>GS.Adjusted) <span class="sc">-</span> <span class="fu">log</span>(<span class="fu">lag</span>(GS<span class="sc">$</span>GS.Adjusted))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>time_series           <span class="ot">&lt;-</span> <span class="fu">cbind</span>(SPYRet, GSRet)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(time_series) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'SPY'</span>, <span class="st">'GS'</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="vector-autoregression-model" class="level1">
+<h1>Vector Autoregression Model</h1>
+<p>A VAR model that estimates the relationship between SPY and GS looks like the following.</p>
+<p><span class="math display">\[\begin{align}
+SPY_t &amp;= \beta^{spy}_0 + \beta^{spy}_1SPY_{t-1} + \beta^{spy}_2SPY_{t-2} + \beta^{spy}_3GS_{t-1} + \beta^{spy}_4GS_{t-2} + \nu_{spy} \\
+GS_t  &amp;= \beta^{gs}_0  + \beta^{gs}_1SPY_{t-1}  + \beta^{gs}_2SPY_{t-2}  + \beta^{gs}_3GS_{t-1}  + \beta^{gs}_4GS_{t-2}  + \nu_{gs}
+\end{align}\]</span></p>
+<p>It consists of two linear regression equations, the first explaining the SPY price and the second explaining the GS price. Notice both equations have the exact same explanatory variables. Namely, today’s (time <em>t</em>) price is explained by yesterdays’ SPY price <span class="math inline">\((SPY_{t-1})\)</span>, the day before yesterday’s SPY price <span class="math inline">\((SPY_{t-2})\)</span>, yesterday’s GS price (<span class="math inline">\(GS_{t-1}\)</span>), and the day before yesterday’s GS price (<span class="math inline">\(GS_{t-2}\)</span>). This is why the VAR is sometimes called a ‘reduced form’ model. We haven’t specified any economic theory about how these equations should be formed. We have simply written them down with exactly equal opportunity for past SPY prices to affect its own and GS prices and for past GS prices to affect its own and and SPY prices. Our estimates of the <span class="math inline">\(\beta\)</span>’s might reveal more about the economics. This is in contrast to a ‘structural model’ where the correct explanatory variables to include on the right hand side would be informed by economic theory. With the VAR, we opt for a fairly general model and let the data do the talking. This approach was perhaps most famously advocated for by Sims(1980), after giving an extensive critique of carefully (mis-)specified macro models of the day.</p>
+<section id="levels-or-returns" class="level2">
+<h2 class="anchored" data-anchor-id="levels-or-returns">Levels or Returns?</h2>
+<p>If you read my first post in the series you should be wondering why in the world it is OK to put the SPY and GS prices into the VAR in levels. After all, we found strong evidence that both are non-stationary. This is true, the VAR model written above would have all the problems of a spurious regression we discussed in the first post. Writing the VAR using returns instead of price levels will usually remedy the situation, as noted in the first <a href="http://blog.mindymallory.com/2018/01/basic-time-series-analysis-the-game/">post</a>.</p>
+<p>Then, a VAR(2) using price returns (using the <span class="math inline">\(\Delta\)</span> notation to indicate <span class="math inline">\(\Delta SPY_t = log(SPY_t) - log(SPY_{t-1})\)</span>) is</p>
+<p><span class="math display">\[\begin{align}
+\Delta SPY_t &amp;= \beta^{spy}_0 + \beta^{spy}_1 \Delta SPY_{t-1} + \beta^{spy}_2 \Delta SPY_{t-2} + \beta^{spy}_3 \Delta GS_{t-1} + \beta^{spy}_4 \Delta GS_{t-2} + \epsilon_{spy} \\
+\Delta GS_t  &amp;= \beta^{gs}_0  + \beta^{gs}_1 \Delta SPY_{t-1}  + \beta^{gs}_2 \Delta SPY_{t-2}  + \beta^{gs}_3 \Delta GS_{t-1}  + \beta^{gs}_4 \Delta GS_{t-2}  + \epsilon_{gs}
+\end{align}\]</span></p>
+<p>Fitting a VAR with two lags to SPY and GS returns yields the following.</p>
+</section>
+<section id="var2-on-spy-and-gs-returns" class="level2">
+<h2 class="anchored" data-anchor-id="var2-on-spy-and-gs-returns">VAR(2) on SPY and GS Returns</h2>
+<div class="cell" data-hash="2018-01-24-Basic-Time-Series-Analysis-Does-Stuff-Move-Together_cache/html/unnamed-chunk-3_935b3b4312c9f3fc82c50c23342a75a4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vars)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stargazer)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>var <span class="ot">&lt;-</span> <span class="fu">VAR</span>(time_series[<span class="dv">2</span><span class="sc">:</span><span class="fu">dim</span>(time_series)[<span class="dv">1</span>],], <span class="at">p =</span> <span class="dv">2</span>, <span class="at">type =</span> <span class="st">"const"</span>, )</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">stargazer</span>(var<span class="sc">$</span>varresult<span class="sc">$</span>SPY, var<span class="sc">$</span>varresult<span class="sc">$</span>GS, <span class="at">type =</span> <span class="st">'html'</span>, <span class="at">dep.var.labels =</span> <span class="fu">c</span>(<span class="st">"Equation 1-SPY  Equation 2-GS"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<table style="text-align:center">
+<tbody><tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="2">
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="2">
+Equation 1-SPY Equation 2-GS
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1)
+</td>
+<td>
+(2)
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+SPY.l1
+</td>
+<td>
+-0.052<sup>**</sup>
+</td>
+<td>
+0.094<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.023)
+</td>
+<td>
+(0.042)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+GS.l1
+</td>
+<td>
+-0.043<sup>***</sup>
+</td>
+<td>
+-0.096<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.013)
+</td>
+<td>
+(0.023)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+SPY.l2
+</td>
+<td>
+-0.059<sup>**</sup>
+</td>
+<td>
+-0.063
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.023)
+</td>
+<td>
+(0.042)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+GS.l2
+</td>
+<td>
+0.029<sup>**</sup>
+</td>
+<td>
+0.035
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.013)
+</td>
+<td>
+(0.023)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+const
+</td>
+<td>
+0.0004<sup>*</sup>
+</td>
+<td>
+0.0002
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.0002)
+</td>
+<td>
+(0.0004)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+4,064
+</td>
+<td>
+4,064
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.017
+</td>
+<td>
+0.005
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.016
+</td>
+<td>
+0.004
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Residual Std. Error (df = 4059)
+</td>
+<td>
+0.013
+</td>
+<td>
+0.023
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+F Statistic (df = 4; 4059)
+</td>
+<td>
+17.034<sup>***</sup>
+</td>
+<td>
+5.531<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td colspan="2" style="text-align:right">
+<sup><em></em></sup><em>p&lt;0.1; <sup><strong></strong></sup><strong>p&lt;0.05; <sup></sup></strong></em>p&lt;0.01
+</td>
+</tr>
+
+</tbody></table>
+</div>
+<p>In the SPY returns equation (1), the first lag of GS returns and the second lag of SPY returns are statistically significant. Also, in the GS returns equation (2), the first and second lag of SPY returns are statistically significant, and the first lag of GS returns is statistically significant.</p>
+</section>
+<section id="what-is-it-used-for" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-it-used-for">What is it Used for?</h2>
+<p>The VAR model is used to determine the relationship among several variables. You can use a VAR for forecasting, like we did with the ARIMA and GARCH models, but as we found with those, the forecasts are usually not precise enough to be all that informative from a practical standpoint. Instead, in practice the researcher will usually end up looking at the following three things that are derived from the fitted VAR model: Granger Causality, Impulse Response Functions, and Forecast Error Variance Decomposition, that reveal something about the nature of how these markets move together (or not).</p>
+<p><a href="http://www.scholarpedia.org/article/Granger_causality">Granger Causality</a> is most commonly implemented by an F-test on the lags of the other variable on the variables of interest. Stated more simply in our context, it tests whether lags of SPY returns are helpful in forecasting GS returns, and vice versa. Impulse response functions show how one variable might react to sudden changes in the other variable. Finally, forecast error variance decomposition (FEVD) estimates how much of your forecast error can be attributed to unpredictability in each variable in the VAR.</p>
+<p>We will look more closely at each.</p>
+</section>
+<section id="granger-causality" class="level2">
+<h2 class="anchored" data-anchor-id="granger-causality">Granger Causality</h2>
+<p>Granger Causality is a different kind of causality than one typically runs into in cross-section econometrics, where you might have some kind of natural experiment. A typical story-line of that type might be something like the following: an unpredictable policy change gave a random subset of people more access to credit. An econometrician might then come along and test if greater access to credit leads to X, Y, or Z - like college enrollment, or mechanization on small-holder farms, etc. depending on the context. In that case, the econometrician will try to convince you whether or not access to credit really <em>caused</em> the change in outcome. Then, once causality has been established (or not), policy prescriptions might be suggested, perhaps to encourage (or not) the provision of credit.</p>
+<p>In time-series econometrics, we can seldom hope to show ‘real’ causality. We settle for Granger causality. Are these things correlated enough that one is useful in forecasting the other? If so, Granger Causality can be established.</p>
+<p>The following code takes the VAR regression output object <code>var</code>, and tests for Granger causality of SPY returns on GS returns and vice versa. The F-test is done the standard way in the lines where <code>boot = FALSE</code>, and using bootstrapped standard errors in the lines where <code>boot = TRUE</code>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Since we already looked in detail and found heteroskedasticity in these return series in the previous GARCH post, we should be concerned that the standard errors of the F-test calculated in the usual way are too narrow. Note that in the output table below the code that the F-statistics are the same using both methods, but the P-values are bigger using the bootstrap. This is because the bootstrap increases the standard errors according to how bad the heteroskedasticity is.</p>
+</section>
+<section id="tests-for-granger-causality" class="level2">
+<h2 class="anchored" data-anchor-id="tests-for-granger-causality">Tests for Granger Causality</h2>
+<div class="cell" data-hash="2018-01-24-Basic-Time-Series-Analysis-Does-Stuff-Move-Together_cache/html/unnamed-chunk-4_78991967bf769935d81b48c911e3f591">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>causeSPY_noboot <span class="ot">&lt;-</span> <span class="fu">causality</span>(var, <span class="at">cause =</span> <span class="st">'SPY'</span>, <span class="at">boot =</span> <span class="cn">FALSE</span>, <span class="at">boot.runs =</span> <span class="dv">5000</span>)<span class="sc">$</span>Granger <span class="sc">%&gt;%</span> <span class="fu">tidy</span>()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>causeSPY_boot   <span class="ot">&lt;-</span> <span class="fu">causality</span>(var, <span class="at">cause =</span> <span class="st">'SPY'</span>, <span class="at">boot =</span> <span class="cn">TRUE</span>, <span class="at">boot.runs =</span> <span class="dv">5000</span>)<span class="sc">$</span>Granger <span class="sc">%&gt;%</span> <span class="fu">tidy</span>()</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>causeGS_noboot  <span class="ot">&lt;-</span> <span class="fu">causality</span>(var, <span class="at">cause =</span> <span class="st">'GS'</span>, <span class="at">boot =</span> <span class="cn">FALSE</span>, <span class="at">boot.runs =</span> <span class="dv">5000</span>)<span class="sc">$</span>Granger <span class="sc">%&gt;%</span> <span class="fu">tidy</span>()</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>causeGS_boot    <span class="ot">&lt;-</span> <span class="fu">causality</span>(var, <span class="at">cause =</span> <span class="st">'GS'</span>, <span class="at">boot =</span> <span class="cn">TRUE</span>, <span class="at">boot.runs =</span> <span class="dv">5000</span>)<span class="sc">$</span>Granger <span class="sc">%&gt;%</span> <span class="fu">tidy</span>()</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>causeSPY_noboot<span class="sc">$</span>parameter <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>causeGS_noboot<span class="sc">$</span>parameter  <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>causeSPY_boot<span class="sc">$</span>df1         <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>causeSPY_boot<span class="sc">$</span>df2         <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>causeGS_boot<span class="sc">$</span>df1         <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>causeGS_boot<span class="sc">$</span>df2         <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>resultstable   <span class="ot">&lt;-</span> <span class="fu">rbind</span>(causeGS_noboot[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)], causeSPY_noboot[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)], causeGS_boot[, <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>)], causeSPY_boot[, <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>)])</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>resultstable<span class="sc">$</span>Bootstrap    <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'No Bootstrap'</span>, <span class="st">''</span>, <span class="st">'Bootstrap'</span>, <span class="st">''</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>resultstable   <span class="ot">&lt;-</span> resultstable[, <span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>)]</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(resultstable)    <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">'Bootstrap'</span>, <span class="st">'df1'</span>, <span class="st">'df2'</span>, <span class="st">'#Bootstraps'</span>, <span class="st">'Stat'</span>, <span class="st">'P-Value'</span>, <span class="st">'Equation'</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>resultstable <span class="sc">%&gt;%</span> </span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="st">"html"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Bootstrap </th>
+   <th style="text-align:right;"> df1 </th>
+   <th style="text-align:right;"> df2 </th>
+   <th style="text-align:right;"> #Bootstraps </th>
+   <th style="text-align:right;"> Stat </th>
+   <th style="text-align:right;"> P-Value </th>
+   <th style="text-align:left;"> Equation </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> No Bootstrap </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 8118 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 8.432894 </td>
+   <td style="text-align:right;"> 0.0002195 </td>
+   <td style="text-align:left;"> Granger causality H0: GS do not Granger-cause SPY </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 8118 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 3.894321 </td>
+   <td style="text-align:right;"> 0.0203952 </td>
+   <td style="text-align:left;"> Granger causality H0: SPY do not Granger-cause GS </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bootstrap </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 5000 </td>
+   <td style="text-align:right;"> 8.432894 </td>
+   <td style="text-align:right;"> 0.0804000 </td>
+   <td style="text-align:left;"> Granger causality H0: GS do not Granger-cause SPY </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> 5000 </td>
+   <td style="text-align:right;"> 3.894321 </td>
+   <td style="text-align:right;"> 0.3928000 </td>
+   <td style="text-align:left;"> Granger causality H0: SPY do not Granger-cause GS </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p>Without the bootstrapped standard errors we would conclude strongly that SPY Granger causes GS and GS Granger causes SPY. When we use bootstrapped standard errors we fail to reject at a 5% confidence level both that GS returns do not Granger cause SPY returns and that SPY returns do not Granger cause GS returns (so we conclude they do not, but just barely). Or, if you like, you could say that at the 10% confidence level, both SPY returns Granger cause GS returns and GS returns Granger cause SPY returns. Pick you narrative.</p>
+</section>
+<section id="forecast-error-variance-decomposition" class="level2">
+<h2 class="anchored" data-anchor-id="forecast-error-variance-decomposition">Forecast Error Variance Decomposition</h2>
+<p>A <a href="https://en.wikipedia.org/wiki/Variance_decomposition_of_forecast_errors">Forecast Error Variance Decomposition</a> is another way to evaluate how markets affect each other using the VAR model. In a FEVD, forecast errors are considered for each equation in the fitted VAR model, then the fitted VAR model is used to determine how much of each error realization is coming from unexpected changes (forecast errors) in the other variable. We can calculate this conveniently with <code>fevd()</code> from the <code>vars</code> package.</p>
+<div class="cell" data-hash="2018-01-24-Basic-Time-Series-Analysis-Does-Stuff-Move-Together_cache/html/unnamed-chunk-5_2e0834d7749ec103e7ddaa6db5fd1b0d">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>FEVD <span class="ot">&lt;-</span> <span class="fu">fevd</span>(var, <span class="at">n.ahead =</span> <span class="dv">5</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(FEVD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2018-01-24-Basic-Time-Series-Analysis-Does-Stuff-Move-Together_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>In the first plot, we see the FEVD for SPY. It appears that although we were borderline on whether or not to conclude that GS returns Granger cause SPY returns, the FEVD reveals that the magnitude of the causality is tiny anyway (we can’t even see the contribution from GS returns on the FEVD graph). Conversely, it appears SPY returns account for about half of the forecast error variance in the GS equation. That seems <a href="http://marcfbellemare.com/wordpress/11680">economically significant</a> to me.</p>
+</section>
+<section id="impulse-response-function" class="level2">
+<h2 class="anchored" data-anchor-id="impulse-response-function">Impulse Response Function</h2>
+<p><a href="https://en.wikipedia.org/wiki/Impulse_response">Impluse Response Functions</a> have a similar motivation, but go about it in a little bit different way. In this exercise, you take a shock to one variable, say SPY, and propagate it through the fitted VAR model for a number of periods. You can trace this through the VAR model and see if it impacts the other variables in a statistically significant way. Also from the <code>vars</code> package, this is easily achieved with the <code>irf()</code> function. Here also confidence intervals are produced by bootstrapping.</p>
+<div class="cell" data-hash="2018-01-24-Basic-Time-Series-Analysis-Does-Stuff-Move-Together_cache/html/unnamed-chunk-6_ab2ff4caf42887b312fe8ea811baf6ac">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>IRF <span class="ot">&lt;-</span> <span class="fu">irf</span>(var, <span class="at">impulse =</span> <span class="st">'SPY'</span>, <span class="at">response =</span> <span class="st">'GS'</span>,  <span class="at">n.ahead =</span> <span class="dv">5</span>, <span class="at">boot =</span> <span class="cn">TRUE</span>, <span class="at">runs =</span> <span class="dv">100</span>, <span class="at">ci =</span> <span class="fl">0.95</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(IRF)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2018-01-24-Basic-Time-Series-Analysis-Does-Stuff-Move-Together_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>IRF <span class="ot">&lt;-</span> <span class="fu">irf</span>(var, <span class="at">impulse =</span> <span class="st">'GS'</span>, <span class="at">response =</span> <span class="st">'SPY'</span>,  <span class="at">n.ahead =</span> <span class="dv">5</span>, <span class="at">boot =</span> <span class="cn">TRUE</span>, <span class="at">runs =</span> <span class="dv">100</span>, <span class="at">ci =</span> <span class="fl">0.95</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(IRF)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="2018-01-24-Basic-Time-Series-Analysis-Does-Stuff-Move-Together_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>It appears that a one standard deviation to SPY returns produces a statistically significant response to GS returns for one period, then becomes insignificant. The one standard deviation to GS returns produces a statistically significant response to SPY two periods later (also nearly statistically significant three periods later). Eyeballing the size of these effects, it looks to me like the FEVD and impulse response analysis point to similar findings. The impact of SPY returns on GS returns appears to be sizable in the IRF, while the the impact of GS returns seems to be minimal on SPY returns from an economic impact perspective.</p>
+</section>
+</section>
+<section id="thats-it" class="level1">
+<h1>That’s It!</h1>
+<p>That covers the basics of what a VAR model is and how to use Granger causality, FEVD, and impulse response functions to analyze how a group of markets relate to one another.</p>
+<p>There will be just a couple more posts in this series on the basics of time-series analysis. In the next post we will cover cointegration and the VECM. Sometimes, non-stationary variables move so closely together that there is a linear combination of those variables that is stationary! This case requires special consideration. The most intuitive cases are markets that are related by a production process, like the soybean complex. Soybean crushers buy soybeans and sell meal and oil. Economic theory would suggest the prices of those three commodities to maintain a relationship so that the profitability of soybean crushers trends around some modest number greater than zero.</p>
+<p>More details in the next post!</p>
+<p>The final post will summarize the series and provide a ‘cook-book’ like decision tree on how to decide which model is appropriate for your case.</p>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<p>Sims, C. A. (1980). Macroeconomics and reality. <em>Econometrica: Journal of the Econometric Society</em>, 1-48.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>A bootstrap is where you do a simulation experiment by randomly drawing a subset of the sample, then calculate the statistic of interest. By doing this a bunch of times you get natural variability in the statistic you care about, which can be used to calculate standard errors of the statistic that are more conservative than the standard method when regression assumptions are not perfectly valid (like having homoskedastic errors). The implementation for many statistics program in the option to ‘bootstrap the standard errors’.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,14 @@
+[
+  {
+    "listing": "/tsbootcamp.html",
+    "items": [
+      "/tsbootcamp/2018-01-02-Time-Series-Explainer.html",
+      "/tsbootcamp/2018-02-05-Basic-Time-Series-Analysis-VECM.html",
+      "/tsbootcamp/2018-02-12-Basic_Time-Series-Cookbook.html",
+      "/tsbootcamp/2018-01-28-Basic-Time-Series-GARCH.html",
+      "/tsbootcamp/2018-01-25-Basic-Time-Series-Analysis-ARIMA-GARCH.html",
+      "/tsbootcamp/2018-01-24-Basic-Time-Series-Analysis-Does-Stuff-Move-Together.html",
+      "/tsbootcamp/2018-02-27-Trees-Forests-Boosting.html"
+    ]
+  }
+]
