@@ -2,4 +2,5 @@
 title: "Time Series Bootcamp"
 listing: 
   contents: tsbootcamp
+  image-placeholder: cutedog.jpg
 ---
